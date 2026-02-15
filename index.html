@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OMG Mitarbeiter Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="./login.js" defer></script>
+</head>
+<body>
+    <main>
+        <h1>Welcome to the <br> <em>OMG</em> Employee Hub</h1>
+        <div>
+            <div class="login">
+                <form method="POST" action="/login">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password">
+                    <br>
+                    <br>
+                    <a href="/passwort_reset"><em>Forgot your password?</em></a>
+                    <br>
+                    <button type="submit" id="submit" >Login</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+    <video autoplay muted loop id="myVideo">
+        <source src="./video/bg.webm" type="video/mp4">
+    </video>
+</html>

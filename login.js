@@ -1,4 +1,5 @@
 document.getElementById("submit").addEventListener("click", function (event) {
+    event.preventDefault();
 
     console.log("Login Button was clicked");
 
@@ -10,6 +11,7 @@ document.getElementById("submit").addEventListener("click", function (event) {
 
     if (usernameInput === username && passwordInput === password) {
         window.alert("logged successful");
+        window.location.href = "/login";
     } else if (usernameInput === username && passwordInput !== password) {
         window.alert("wrong password");
         event.preventDefault();

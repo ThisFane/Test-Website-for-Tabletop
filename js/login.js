@@ -11,7 +11,8 @@ document.getElementById("submit").addEventListener("click", function (event) {
 
     if (usernameInput === username && passwordInput === password) {
         window.alert("logged successful");
-        window.location.href = "/login";
+        window.location.href = "./login";
+        setSession({ username: username });
     } else if (usernameInput === username && passwordInput !== password) {
         window.alert("wrong password");
         event.preventDefault();
@@ -21,3 +22,6 @@ document.getElementById("submit").addEventListener("click", function (event) {
     }
 
 });
+
+
+

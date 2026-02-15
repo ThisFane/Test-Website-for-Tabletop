@@ -1,0 +1,132 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #000000;
+}
+
+@font-face {
+    font-family: "Robtronika-Regular";
+    src: url("./fonts/Robtronika-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    text-align: center;
+    color: #ffffff;
+    font-family: Cascadia Code, ui-monospace;
+}
+
+main div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* --- Typography --- */
+
+main h1 em {
+    font-size: clamp(1.8rem, 3vw, 3rem);
+    color: #3bd511;
+    font-family: Robtronika-Regular, serif;
+}
+
+h1 {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    text-shadow: 0.2vw 0.2vw 0.5vw black;
+}
+
+h2 {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    text-shadow: 0.2vw 0.2vw 0.5vw black;
+}
+
+label {
+    text-shadow: 0.2vw 0.2vw 0.5vw black;
+}
+
+.login a {
+    font-size: clamp(0.75rem, 1vw, 1rem);
+    transition-duration: 0.5s;
+}
+
+.login a em {
+    transition-duration: 0.5s;
+}
+
+.login a:hover {
+    color: #13c30e;
+    transform: scale(1.1);
+    transition-duration: 0.5s;
+}
+
+.login a em:hover {
+    color: #13c30e;
+    transform: scale(1.1);
+    transition-duration: 0.5s;
+}
+
+/* --- Login Box --- */
+
+.login {
+    display: flex;
+    background-color: rgba(255 255 255 / 0.4);
+    flex-direction: column;
+    width: 20vw;
+    min-width: 280px;
+    max-width: 500px;
+    padding: 2vh 6vw;
+    border-radius: 1vw;
+    margin: 0 auto;
+    min-height: 40vh;
+}
+
+.login input {
+    margin: 1.5vh 0;
+    color: green;
+    border-radius: 1vw;
+    border: none;
+    height: 4vh;
+    width: 100%;
+    background-color: rgb(255 255 255 / 0.7);
+}
+
+.login input:focus {
+    outline: #36871e solid 1px;
+}
+
+.login button {
+    width: 50%;
+    border-radius: 1vw;
+    border: none;
+    margin-top: 5vh;
+    height: 5vh;
+    transition: 0.5s;
+    color: #040404;
+}
+
+.login button:hover {
+    color: green;
+    transform: scale(1.1);
+}
+
+/* --- Background Video --- */
+
+#myVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: -100;
+    width: 100vw;
+    filter: blur(10px) hue-rotate(0deg);
+    animation: rotateHue 10s linear infinite;
+    opacity: 0.60;
+}
+
+@keyframes rotateHue {
+    from { filter: blur(10px) hue-rotate(0deg); }
+    to { filter: blur(10px) hue-rotate(360deg); }
+}

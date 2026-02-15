@@ -8,3 +8,11 @@ window.addEventListener('load', function() {
         window.location.href = "index.html";
     }
 });
+
+window.addEventListener('keydown', function(e) {
+    if (e.key.toLowerCase() === 'd' && e.shiftKey) {
+        localStorage.removeItem('session');
+        console.log('Session cleared via hotkey!');
+        alert('Session cleared!');
+    }
+});

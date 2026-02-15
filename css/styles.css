@@ -48,22 +48,24 @@ label {
     text-shadow: 0.2vw 0.2vw 0.5vw black;
 }
 
-.login a {
+.login #forgotten {
     font-size: clamp(0.75rem, 1vw, 1rem);
     transition-duration: 0.5s;
+    background: none;
+    border: none;
 }
 
-.login a em {
+.login #forgotten em {
     transition-duration: 0.5s;
 }
 
-.login a:hover {
+.login #forgotten:hover {
     color: #13c30e;
     transform: scale(1.1);
     transition-duration: 0.5s;
 }
 
-.login a em:hover {
+.login #forgotten em:hover {
     color: #13c30e;
     transform: scale(1.1);
     transition-duration: 0.5s;
@@ -98,7 +100,7 @@ label {
     outline: #36871e solid 1px;
 }
 
-.login button {
+.login #submit {
     width: 50%;
     border-radius: 1vw;
     border: none;
@@ -108,7 +110,7 @@ label {
     color: #040404;
 }
 
-.login button:hover {
+.login #submit:hover {
     color: green;
     transform: scale(1.1);
 }
@@ -143,3 +145,48 @@ label {
 
 
 }
+
+#myModal{
+    display: none;
+    position: fixed;
+    background-color: rgb(255 255 255 / 0.7);
+    backdrop-filter: blur(10px);
+    width: 50vw;
+    border-radius: 1vw;
+    padding: 2vh 6vw;
+    z-index: 10;
+}
+
+#myModal p, #myModal em, #myModal strong, #myModal span{
+    color: #4c4343;
+}
+
+#myModal h1{
+    color: #66c549;
+}
+
+#modelEffect{
+    display: none;
+    position: fixed;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: brightness(0.5);
+}
+
+.close{
+    background: none;
+    border: none;
+    color: #4c4343;
+    font-size: 3vw;
+    position: absolute;
+    right: 3vw;
+    transition-duration: 0.5s;
+}
+
+.close:hover{
+    transform: scale(1.2) rotate(-90deg);
+    transition-duration: 0.5s;
+    color: #13c30e;
+}
+

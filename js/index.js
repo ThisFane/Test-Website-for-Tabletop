@@ -1,3 +1,7 @@
+const modal = document.getElementById("myModal");
+const modalEffect = document.getElementById("modelEffect");
+const closeButten = document.getElementById("close");
+
 document.getElementById("submit").addEventListener("click", function (event) {
     event.preventDefault();
 
@@ -25,3 +29,16 @@ document.getElementById("submit").addEventListener("click", function (event) {
 
 
 
+document.getElementById("forgotten").addEventListener("click", function (event) {
+    event.preventDefault();
+
+    console.log("Forgotten Login Button was clicked");
+
+    modal.style.display = "block";
+    modalEffect.style.display = "block";
+});
+
+closeButten.addEventListener("click", function (event) {
+    modal.style.display = "none";
+    modalEffect.style.display = "none";
+})

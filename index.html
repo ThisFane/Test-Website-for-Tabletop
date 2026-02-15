@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" type="image/x-icon" href="./img/favicon.svg">
     <script src="./js/session.js"></script>
-    <script src="./js/login.js" defer></script>
+    <script src="./js/index.js" defer></script>
 </head>
 <body>
     <main>
@@ -21,7 +21,7 @@
                     <input type="password" id="password" name="password">
                     <br>
                     <br>
-                    <a href="/passwort_reset"><em>Forgot your password?</em></a>
+                    <button type="button" id="forgotten">Forgot your password?</button>
                     <br>
                     <button type="submit" id="submit" >Login</button>
                 </form>
@@ -29,7 +29,30 @@
         </div>
     </main>
 </body>
-    <video autoplay muted loop id="myVideo">
+    <video id="myVideo" autoplay loop muted>
         <source src="./video/bg.webm" type="video/mp4">
     </video>
+    <div id="myModal" class="modal">
+        <button id="close" class="close">&times;</button>
+        <h1>Account Access and Password Recovery</h1>
+        <p>If you need to reset your password, please contact your <strong>supervising officer</strong> for assistance. For security reasons, password resets cannot be handled automatically.
+
+            You may either call your supervising officer directly or email them with your full name, username, and a brief description of the issue. They will guide you through the verification process and help you regain access to your account.
+
+            If your supervising officer is unavailable, or you continue to experience technical difficulties, please contact the <strong>IT support representative:</strong>
+        </p>
+        <p>
+            <strong>Markus Schneider</strong> <br>
+            IT Support Specialist<br>
+            Email: it@omg.com<br>
+        <p id="number">
+        Phone: 0
+        </p>
+        <p>
+            <strong>Please do not share </strong> your password with anyone, including IT staff. <strong>
+            They will never ask for your current password.</strong>
+        </p>
+    </div>
+    <div id="modelEffect">
+    </div>
 </html>

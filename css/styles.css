@@ -143,6 +143,9 @@ label {
         max-width: 1000px;
     }
 
+    #myModal{
+        width: 75vw;
+    }
 
 }
 

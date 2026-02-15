@@ -6,7 +6,7 @@ document.getElementById("submit").addEventListener("click", function (event) {
 
     const usernameInput = document.getElementById("username")?.value.trim();
     const passwordInput = document.getElementById("password")?.value.trim();
-    const username = "username"
+    const username = "username";
     const password = "password";
 
     if (usernameInput === username && passwordInput === password) {

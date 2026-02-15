@@ -117,10 +117,10 @@ label {
 
 #myVideo {
     position: fixed;
-    right: 0;
-    bottom: 0;
     z-index: -100;
-    width: 100vw;
+    object-fit: cover;
+    width: 110%;
+    height: 110%;
     filter: blur(10px) hue-rotate(0deg);
     animation: rotateHue 10s linear infinite;
     opacity: 0.60;
@@ -138,11 +138,5 @@ label {
         width: 70vw;
     }
 
-    #myVideo {
-        width: unset;
-        height: 100vh;
-        right: unset;
-        bottom: unset;
-    }
 
 }

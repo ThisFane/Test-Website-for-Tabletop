@@ -1,6 +1,10 @@
 
-body {
+body p{
     display: none;
+}
+
+body p{
+    color: white;
 }
 
 html{

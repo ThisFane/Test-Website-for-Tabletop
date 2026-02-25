@@ -1,12 +1,279 @@
+/* --- Global Styles & Fonts --- */
+@font-face {
+    font-family: "Robtronika-Regular";
+    src: url("../fonts/Robtronika-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
 
-body{
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #000000;
+    padding: 20px;
+    color: #ffffff;
+    font-family: "Cascadia Code", ui-monospace;
+}
+
+/* --- Background Video --- */
+#myVideo {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -100;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    filter: blur(10px) hue-rotate(0deg);
+    animation: rotateHue 15s linear infinite;
+    opacity: 0.5;
+}
+
+@keyframes rotateHue {
+    to { filter: blur(10px) hue-rotate(360deg); }
+}
+
+/* --- Main Layout Container --- */
+.panel-container {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(20px);
+    width: 75vw;
+    height: auto;
+    min-height: 1000px;
+    border-radius: 1vw;
+    z-index: 1;
+    overflow: hidden;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.7);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.header-title {
+    font-family: "Robtronika-Regular", serif;
+    font-size: 2rem;
+    color: #3bd511;
+    text-shadow: 2px 2px 5px #000;
+}
+
+/* --- Tabs --- */
+.tabs-container {
+    display: flex;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.tab-button {
+    flex: 1;
+    padding: 15px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.tab-button.active {
+    border-bottom: 3px solid #3bd511;
+    color: #3bd511;
+}
+
+/* --- Rooms Layout (2 per row = 4 cameras across) --- */
+.tab-content {
+    flex: 1;
     display: none;
+    padding: 25px;
+    overflow-y: auto;
+    height: 100%;
 }
 
-p{
-    color: white;
+.tab-content.active { display: block; }
+
+.rooms-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
 }
 
-html{
-    background-color: black;
+.room {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 400px;
+}
+
+.room-title {
+    font-family: "Robtronika-Regular", serif;
+    color: #3bd511;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    text-align: left;
+}
+
+/* --- Camera Grid (2 per room) --- */
+.camera-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    min-height: 460px;
+    gap: 10px;
+    flex-grow: 1;
+}
+
+img{
+    width: 100%;
+    object-fit: contain;
+}
+
+.camera-card {
+    background: #000;
+    border-radius: 20px;
+    height: 225px;
+    overflow: hidden;
+}
+
+.camera-feed {
+    position: relative;
+    background: #0a0a0a;
+}
+
+/* --- Camera Overlays (Fixed Legibility) --- */
+.camera-time, .camera-status {
+    position: absolute;
+    top: 5px;
+    background: rgba(0, 0, 0, 0.75);
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    z-index: 5;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.camera-time { left: 5px; color: #fff; }
+.camera-status { right: 5px; color: #3bd511; }
+.camera-status.offline { color: #ff4444; }
+
+.camera-info {
+    padding: 8px;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.camera-name {
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+/* --- Buttons --- */
+.disable-all-button {
+    width: 97%;
+    margin-left: 1.5%;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 20px;
+    border: none;
+    background: rgba(255, 255, 255, 1);
+    color: #040404;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.5s;
+}
+
+.disable-all-button:hover {
+    background: #fff;
+    color: #3bd511;
+    transform: scale(1.05);
+}
+
+.disable-all-button.all-disabled { background: #ff4444; color: #fff; }
+
+/* --- Modal FIX (Was broken) --- */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    z-index: 9999; /* Must be highest */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal-content {
+    background-color: rgba(255, 255, 255, 0.95);
+    width: 450px;
+    padding: 40px;
+    border-radius: 15px;
+    color: #4c4343; /* Dark text from your login logic */
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    animation: modalPop 0.3s ease-out;
+}
+
+@keyframes modalPop {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal-title {
+    font-family: "Robtronika-Regular", serif;
+    color: #36871e;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.modal-btn {
+    padding: 12px 25px;
+    margin: 15px 5px 0;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.modal-btn.confirm { background: #ff4444; color: white; }
+.modal-btn.cancel { background: #ccc; color: #333; }
+
+/* --- Footer --- */
+.panel-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 40px;
+    background: rgba(0, 0, 0, 0.5);
+    font-size: 0.8rem;
+    color: #3bd511;
+}
+
+/* Responsive for small screens */
+@media (max-width: 1100px) {
+    .rooms-container { grid-template-columns: 1fr; }
+    .camera-grid { grid-template-columns: repeat(2, 1fr); }
 }

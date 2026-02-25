@@ -3,13 +3,462 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WIP User Interface</title>
+    <title>Employee Hub</title>
     <link rel="stylesheet" href="./css/login.css">
-    <link rel="icon" type="image/x-icon" href="./img/favicon.svg">
     <script src="./js/session.js"></script>
-    <script src="./js/loginChecker.js" defer></script>
+    <script src="./js/index.js" defer></script>
 </head>
 <body>
-    <p>WIP User Interface</p>
+    <!-- Warning Modal -->
+    <div class="modal-overlay" id="warningModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-warning-icon">⚠️</div>
+                <div class="modal-title">Warning</div>
+            </div>
+            <div class="modal-body">
+                <p>You are about to <strong>DISABLE all cameras</strong> in:</p>
+                <div class="room-name" id="warningRoomName">Room Name</div>
+                <div class="warning-text">
+                    This will stop all surveillance in this area. This is a critical security action.
+                </div>
+                <p><strong>Are you sure you want to continue?</strong></p>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="cancelWarning()">Cancel</button>
+                <button class="modal-btn confirm" onclick="confirmDisable()">Disable All</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-container">
+        <div class="panel-header">
+            <div class="header-title">OMG • Employee Hub</div>
+            <div class="system-status">
+                <div class="status-indicator"></div>
+                <div class="status-text">System Secured</div>
+            </div>
+        </div>
+
+        <div class="tabs-container" id="tabsContainer">
+            <button class="tab-button active" onclick="switchTab('cameras')">🔐 Cameras</button>
+            <button class="tab-button" onclick="switchTab('floorplan')">📐 Floor Plan</button>
+            <button class="tab-button" onclick="switchTab('logs')">🔐 Activity Logs</button>
+            <button class="tab-button" onclick="switchTab('settings')">🔐 Settings</button>
+            <button class="tab-button" onclick="switchTab('reports')">🔐 Reports</button>
+        </div>
+
+        <!-- Cameras Tab -->
+        <div class="tab-content active" id="tab-cameras">
+            <div class="rooms-container" id="roomsContainer"></div>
+        </div>
+
+        <!-- Floor Plan Tab -->
+        <div class="tab-content" id="tab-floorplan">
+            <div style="padding: 30px;">
+                <h2 style="font-family: 'Robtronika-Regular', serif; color: #3bd511; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px rgba(59, 213, 17, 0.3);">Facility Floor Plan</h2>
+                <div class="floorplan-container">
+                    <div style="text-align: center;">
+                        <svg width="100" height="100" viewBox="0 0 24 24" style="margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(59, 213, 17, 0.5));">
+                            <path fill="#3bd511" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54h2.79l-.04.02c-1.11 1.38-2.87 2.25-4.75 2.25-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.67 4.22 1.78l1.41-1.41C13.79 5.5 11.93 4.5 10 4.5 5.58 4.5 2 8.08 2 12.5s3.58 8 8 8c3.46 0 6.44-2.32 7.49-5.5h-5.53z"/>
+                        </svg>
+                        <p style="color: rgba(200, 200, 200, 0.8); font-size: 14px;">Floor Plan Image</p>
+                        <p style="color: rgba(200, 200, 200, 0.6); font-size: 12px;">Upload PNG to replace this placeholder</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Logs Tab -->
+        <div class="tab-content" id="tab-logs">
+            <div style="padding: 30px;">
+                <h2 style="font-family: 'Robtronika-Regular', serif; color: #3bd511; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px rgba(59, 213, 17, 0.3);">Activity Logs</h2>
+                <div id="logsContainer" style="max-height: 600px; overflow-y: auto;">
+                    <!-- Log entries will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div class="tab-content" id="tab-settings">
+            <div style="padding: 30px; max-width: 800px; margin: 0 auto;">
+                <h2 style="font-family: 'Robtronika-Regular', serif; color: #3bd511; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px rgba(59, 213, 17, 0.3);">System Settings</h2>
+
+                <div class="settings-section">
+                    <h3>Recording Settings</h3>
+                    <div class="settings-row">
+                        <label>Recording Quality</label>
+                        <select><option>1080p (Default)</option><option>720p</option><option>480p</option></select>
+                    </div>
+                    <div class="settings-row">
+                        <label>Frame Rate (FPS)</label>
+                        <select><option>30 (Default)</option><option>24</option><option>60</option></select>
+                    </div>
+                    <div class="settings-row">
+                        <label>Auto-Archive After (Days)</label>
+                        <input type="number" value="30">
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Alert Settings</h3>
+                    <div class="settings-row">
+                        <label>Camera Offline Alert</label>
+                        <input type="checkbox" checked>
+                    </div>
+                    <div class="settings-row">
+                        <label>Motion Detection</label>
+                        <input type="checkbox" checked>
+                    </div>
+                    <div class="settings-row">
+                        <label>Emergency Lockdown</label>
+                        <input type="checkbox">
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>System Information</h3>
+                    <div style="color: rgba(200, 200, 200, 0.8); font-size: 12px; line-height: 2;">
+                        <div>System Version: <strong style="color: #3bd511;">v2.4.1</strong></div>
+                        <div>Last Update: <strong style="color: #3bd511;">2024-02-25 14:32:45</strong></div>
+                        <div>Storage Used: <strong style="color: #3bd511;">2.3 TB / 400 TB</strong></div>
+                        <div>Active Cameras: <strong style="color: #3bd511;"><span id="settingsActiveCams">24</span>/24</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div class="tab-content" id="tab-reports">
+            <div style="padding: 30px;">
+                <h2 style="font-family: 'Robtronika-Regular', serif; color: #3bd511; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px rgba(59, 213, 17, 0.3);">Reports</h2>
+                <div id="reportsContainer">
+                    <!-- Reports will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-footer">
+            <div class="camera-count">Active Cameras: <span id="activeCount">24</span>/24</div>
+            <div id="footerTime"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CAMERA DATA - Easy to manage
+        // Set disabled: true to disable a camera
+        // ============================================
+
+        const rooms = {
+            mainEntrance: {
+                name: '🔐 Main Entrance',
+                cameras: [
+                    { id: 'CAM-001', name: 'CAM-001', location: 'Front Left', disabled: true, image: './img/room.jpg' },
+                    { id: 'CAM-002', name: 'CAM-002', location: 'Front Right', disabled: false, image: './img/room.jpg' },
+                    { id: 'CAM-003', name: 'CAM-003', location: 'Door Close-up', disabled: false, image: './img/room.jpg' },
+                    { id: 'CAM-004', name: 'CAM-004', location: 'Overhead', disabled: false, image: './img/room.jpg' }
+                ]
+            },
+            temporal: {
+                name: '⏱ Temporal Archive',
+                cameras: [
+                    { id: 'CAM-005', name: 'CAM-005', location: 'Artifact Wing A', disabled: false, image: './img/room.jpg' },
+                    { id: 'CAM-006', name: 'CAM-006', location: 'Artifact Wing B', disabled: false, image: './img/room.jpg' }
+                ]
+            },
+            restricted: {
+                name: '⚠ Restricted Sector',
+                cameras: [
+                    { id: 'CAM-007', name: 'CAM-007', location: 'Level 1 - Chronological', disabled: true, image: './img/room.jpg' },
+                    { id: 'CAM-008', name: 'CAM-008', location: 'Level 2 - Paradox Vault', disabled: false, image: './img/room.jpg' },
+                    { id: 'CAM-009', name: 'CAM-009', location: 'Level 3 - Anomaly Core', disabled: false, image: './img/room.jpg' }
+                ]
+            },
+            containment: {
+                name: '🔒 Containment Bay',
+                cameras: [
+                    { id: 'CAM-010', name: 'CAM-010', location: 'Alpha Chamber', disabled: true, image: './img/room.jpg' },
+                    { id: 'CAM-011', name: 'CAM-011', location: 'Delta Chamber', disabled: true, image: './img/room.jpg' },
+                    { id: 'CAM-012', name: 'CAM-012', location: 'Omega Chamber', disabled: false, image: './img/room.jpg' }
+                ]
+            },
+            research: {
+                name: '🔬 Research Lab',
+                cameras: [
+                    { id: 'CAM-013', name: 'CAM-013', location: 'Temporal Analysis', disabled: true, image: './img/room.jpg' },
+                    { id: 'CAM-014', name: 'CAM-014', location: 'Origin Trace', disabled: true, image: './img/room.jpg' }
+                ]
+            },
+            vault: {
+                name: '💎 Artifact Vault',
+                cameras: [
+                    { id: 'CAM-015', name: 'CAM-015', location: 'Primary Storage', disabled: true, image: './img/room.jpg' },
+                    { id: 'CAM-016', name: 'CAM-016', location: 'Secured Pedestal', disabled: true, image: './img/room.jpg' },
+                    { id: 'CAM-017', name: 'CAM-017', location: 'Entry Point', disabled: false, image: './img/room.jpg' }
+                ]
+            },
+            deepCore: {
+                name: '🌌 Deep Core',
+                cameras: [
+                    { id: 'CAM-018', name: 'CAM-018', location: 'Foundation Level', disabled: true, image: './img/room.jpg' },
+                    { id: 'CAM-019', name: 'CAM-019', location: 'Energy Grid', disabled: false, image: './img/room.jpg' }
+                ]
+            },
+            quarantine: {
+                name: '⛔ Quarantine Zone',
+                cameras: [
+                    { id: 'CAM-020', name: 'CAM-020', location: 'Isolation Chamber A', disabled: false, image: './img/room.jpg' },
+                    { id: 'CAM-021', name: 'CAM-021', location: 'Isolation Chamber B', disabled: false, image: './img/room.jpg' },
+                    { id: 'CAM-022', name: 'CAM-022', location: 'Observation Room', disabled: false, image: './img/room.jpg' }
+                ]
+            },
+            monitoring: {
+                name: '👁 Central Monitoring',
+                cameras: [
+                    { id: 'CAM-023', name: 'CAM-023', location: 'Control Center', disabled: false, image: './img/room.jpg' },
+                    { id: 'CAM-024', name: 'CAM-024', location: 'Alert Hub', disabled: false, image: './img/room.jpg' }
+                ]
+            }
+        };
+
+        // ============================================
+        // LOG ENTRIES - Add easily here
+        // ============================================
+
+        let logEntries = [
+            { timestamp: '2024-02-25 14:32:45', type: 'success', title: 'System Initialized', description: 'Vault security system booted successfully' },
+            { timestamp: '2024-02-25 14:33:12', type: 'info', title: 'Cameras Online', description: '24 cameras connected and streaming' },
+            { timestamp: '2024-02-25 14:35:20', type: 'info', title: 'Monitoring Started', description: 'All security zones now under surveillance' }
+        ];
+
+        // ============================================
+        // REPORTS - Add easily here
+        // ============================================
+
+        let reports = [
+            { date: '2024-02-25', title: 'Daily Security Summary', content: '<strong>Total Events:</strong> 3<br><strong>Incidents:</strong> 0<br><strong>Uptime:</strong> 99.9%' },
+            { date: '2024-02-24', title: 'Weekly Overview', content: '<strong>Cameras Active:</strong> 24/24<br><strong>Total Recording Hours:</strong> 168<br><strong>Storage Used:</strong> 2.3 TB' }
+        ];
+
+        // Helper functions
+        function addLogEntry(type, title, description) {
+            const now = new Date();
+            const timestamp = now.toISOString().replace('T', ' ').slice(0, 19);
+            logEntries.unshift({ timestamp, type, title, description });
+            renderLogs();
+        }
+
+        function addReport(title, content) {
+            const now = new Date();
+            const date = now.toISOString().slice(0, 10);
+            reports.unshift({ date, title, content });
+            renderReports();
+        }
+
+        let pendingRoomKey = null;
+
+        function toggleRoom(roomKey) {
+            const room = rooms[roomKey];
+            const allDisabled = room.cameras.every(c => c.disabled);
+
+            if (!allDisabled) {
+                pendingRoomKey = roomKey;
+                document.getElementById('warningRoomName').textContent = room.name;
+                document.getElementById('warningModal').classList.add('active');
+            } else {
+                room.cameras.forEach(camera => {
+                    camera.disabled = false;
+                });
+                renderRooms();
+            }
+        }
+
+        function confirmDisable() {
+            if (pendingRoomKey) {
+                const room = rooms[pendingRoomKey];
+                room.cameras.forEach(camera => {
+                    camera.disabled = true;
+                });
+                renderRooms();
+                document.getElementById('warningModal').classList.remove('active');
+                pendingRoomKey = null;
+            }
+        }
+
+        function cancelWarning() {
+            document.getElementById('warningModal').classList.remove('active');
+            pendingRoomKey = null;
+        }
+
+        function renderRooms() {
+            const container = document.getElementById('roomsContainer');
+            container.innerHTML = '';
+
+            for (const [key, room] of Object.entries(rooms)) {
+                const roomEl = document.createElement('div');
+                roomEl.className = 'room';
+
+                let camerasHTML = '';
+                let activeCount = 0;
+                room.cameras.forEach(camera => {
+                    if (!camera.disabled) activeCount++;
+                    const disabledClass = camera.disabled ? 'disabled' : '';
+                    const statusText = camera.disabled ? '● OFFLINE' : '● LIVE';
+                    const statusClass = camera.disabled ? 'offline' : '';
+
+                    const feedHTML = camera.image
+                        ? `<img src="${camera.image}" alt="${camera.name}">`
+                        : `<div class="camera-placeholder">
+                             <svg viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="8"/>
+                                <path d="M12 4v4M12 16v4M4 12h4M16 12h4"/>
+                                <circle cx="12" cy="12" r="2"/>
+                             </svg>
+                             <div class="camera-id">${camera.id}</div>
+                           </div>`;
+
+                    camerasHTML += `
+                        <div class="camera-card ${disabledClass}">
+                            <div class="camera-feed">
+                                ${feedHTML}
+                                <div class="camera-overlay">
+                                    <div class="camera-time" data-cam-id="${camera.id}">--:--:--</div>
+                                    <div class="camera-status ${statusClass}">${statusText}</div>
+                                </div>
+                            </div>
+                            <div class="camera-info">
+                                <div class="camera-name">${camera.name}</div>
+                                <div class="camera-location">${camera.location}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                const allDisabled = activeCount === 0;
+                const disableButtonText = allDisabled ? 'Enable All' : 'Disable All';
+                const disableButtonClass = allDisabled ? 'all-disabled' : '';
+
+                roomEl.innerHTML = `
+                    <div class="cameras-box">
+                        <div class="camera-grid">
+                            ${camerasHTML}
+                        </div>
+                    </div>
+                    <div class="room-header">
+                        <div class="room-title">${room.name}</div>
+                        <div class="room-camera-count">${activeCount}/${room.cameras.length} cameras active</div>
+                    </div>
+                    <div class="room-control">
+                        <div class="room-info">
+                            <div class="room-info-label">System Status</div>
+                            <div class="room-info-value">${allDisabled ? 'All Offline' : 'Recording'}</div>
+                        </div>
+                        <button class="disable-all-button ${disableButtonClass}" onclick="toggleRoom('${key}')">
+                            ${disableButtonText}
+                        </button>
+                    </div>
+                `;
+                container.appendChild(roomEl);
+            }
+
+            updateActiveCount();
+            updateAllTimes();
+        }
+
+        function renderLogs() {
+            const container = document.getElementById('logsContainer');
+            container.innerHTML = '';
+
+            if (logEntries.length === 0) {
+                container.innerHTML = '<div class="placeholder-section">No log entries</div>';
+                return;
+            }
+
+            logEntries.forEach(log => {
+                const logEl = document.createElement('div');
+                logEl.className = 'logs-item';
+                logEl.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span class="log-type">${log.type}</span>
+                        <span class="log-time">${log.timestamp}</span>
+                    </div>
+                    <div class="log-title">${log.title}</div>
+                    <div class="log-description">${log.description}</div>
+                `;
+                container.appendChild(logEl);
+            });
+        }
+
+        function renderReports() {
+            const container = document.getElementById('reportsContainer');
+            container.innerHTML = '';
+
+            if (reports.length === 0) {
+                container.innerHTML = '<div class="placeholder-section">No reports available</div>';
+                return;
+            }
+
+            reports.forEach(report => {
+                const reportEl = document.createElement('div');
+                reportEl.className = 'report-item';
+                reportEl.innerHTML = `
+                    <div class="report-header">
+                        <div class="report-title">${report.title}</div>
+                        <span class="report-date">${report.date}</span>
+                    </div>
+                    <div class="report-content">${report.content}</div>
+                `;
+                container.appendChild(reportEl);
+            });
+        }
+
+        function updateActiveCount() {
+            let count = 0;
+            for (const [, room] of Object.entries(rooms)) {
+                count += room.cameras.filter(c => !c.disabled).length;
+            }
+            let total = 0;
+            for (const [, room] of Object.entries(rooms)) {
+                total += room.cameras.length;
+            }
+            document.getElementById('activeCount').textContent = `${count}/${total}`;
+            document.getElementById('settingsActiveCams').textContent = count;
+        }
+
+        function updateAllTimes() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const timeStr = `${hours}:${minutes}:${seconds}`;
+
+            document.querySelectorAll('.camera-time').forEach(el => {
+                el.textContent = timeStr;
+            });
+
+            document.getElementById('footerTime').textContent = `System Time: ${timeStr}`;
+        }
+
+        function switchTab(tabName) {
+            const allTabs = document.querySelectorAll('.tab-content');
+            allTabs.forEach(tab => tab.classList.remove('active'));
+
+            const allButtons = document.querySelectorAll('.tab-button');
+            allButtons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Initialize
+        renderRooms();
+        renderLogs();
+        renderReports();
+        setInterval(updateAllTimes, 1000);
+    </script>
 </body>
+<video id="myVideo" autoplay loop muted>
+    <source src="./video/bg.webm" type="video/mp4">
+</video>
 </html>

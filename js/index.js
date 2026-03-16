@@ -10,12 +10,12 @@ document.getElementById("submit").addEventListener("click", function (event) {
 
     const usernameInput = document.getElementById("username")?.value.trim();
     const passwordInput = document.getElementById("password")?.value.trim();
-    const username = "username";
-    const password = "password";
+    const username = "Jorden";
+    const password = "Monty";
 
     if (usernameInput === username && passwordInput === password) {
         window.alert("logged successful");
-        window.location.href = "./login";
+        window.location.href = "./login.html";
         setSession({ username: username });
     } else if (usernameInput === username && passwordInput !== password) {
         window.alert("wrong password");

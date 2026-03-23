@@ -268,7 +268,7 @@
         function toggleRoom(roomKey) {
             const room = rooms[roomKey];
             const allDisabled = room.cameras.every(c => c.disabled);
-            const disabledCameras = new Set(["CAM-001","CAM-007", "CAM-0010", "CAM-0011", "CAM-0013", "CAM-0014", "CAM-0015", "CAM-0016", "CAM-0018"]);
+            const disabledCameras = new Set(["CAM-001", "CAM-007", "CAM-010", "CAM-011", "CAM-013", "CAM-014", "CAM-015", "CAM-016", "CAM-018"]);
 
             if (!allDisabled) {
                 pendingRoomKey = roomKey;
